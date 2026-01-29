@@ -1,0 +1,990 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Baloo+2:wght@700;800&display=swap');
+
+html {
+  height: 100%;
+  height: -webkit-fill-available;
+}
+
+:root {
+  --bg: #1a0f2e;
+  --card: #2d1b4e;
+  --card-2: #1f1338;
+  --accent: #ff6b9d;
+  --accent-2: #ffd93d;
+  --text: #ffffff;
+  --muted: #c0b3d4;
+  --ok: #6bffb8;
+  --danger: #ff5757;
+  --glow: radial-gradient(900px 500px at 20% 0%, rgba(255, 107, 157, 0.3), transparent 70%),
+    radial-gradient(1000px 600px at 80% 20%, rgba(255, 217, 61, 0.25), transparent 70%),
+    radial-gradient(800px 500px at 50% 100%, rgba(107, 255, 184, 0.2), transparent 70%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Fredoka", sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  height: 100vh;
+  height: -webkit-fill-available;
+  height: 100dvh;
+  overflow: hidden;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bg-glow {
+  position: fixed;
+  inset: 0;
+  background: var(--glow);
+  z-index: -1;
+}
+
+.app {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  height: 100vh;
+  height: -webkit-fill-available;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 8px 16px 6px;
+  gap: 12px;
+  text-align: center;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 10;
+}
+
+.logo {
+  font-family: "Baloo 2", cursive;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  font-size: 26px;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 4px 20px rgba(255, 107, 157, 0.4);
+  flex: 1;
+}
+
+.language-switcher {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.lang-btn {
+  min-width: 36px;
+  min-height: 36px;
+  padding: 6px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.08);
+  border: 2px solid rgba(255,255,255,0.15);
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.lang-btn:active {
+  transform: scale(0.95);
+}
+
+.lang-btn.active {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border-color: var(--accent);
+  box-shadow: 0 4px 20px rgba(255, 107, 157, 0.4);
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.author-link {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.author-link:hover {
+  opacity: 1;
+}
+
+.screen {
+  display: none;
+  animation: fadeIn 0.4s ease;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.screen.active {
+  display: flex;
+  align-items: stretch;
+}
+
+.card {
+  background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 24px;
+  padding: 20px 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+.card h1 {
+  font-family: "Baloo 2", cursive;
+  font-size: 28px;
+  margin: 0 0 16px;
+  text-align: center;
+  color: var(--accent-2);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.field-full {
+  grid-column: 1 / -1;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+label {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-2);
+}
+
+input, select {
+  background: var(--card-2);
+  border: 2px solid rgba(255,255,255,0.15);
+  color: var(--text);
+  border-radius: 16px;
+  padding: 12px 14px;
+  font-size: 16px;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(255, 107, 157, 0.2);
+}
+
+/* Button Groups */
+.button-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.number-btn, .time-btn {
+  flex: 1;
+  min-width: 50px;
+  padding: 12px 10px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.08);
+  border: 2px solid rgba(255,255,255,0.15);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: "Fredoka", sans-serif;
+  min-height: 48px;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.number-btn:active, .time-btn:active {
+  transform: scale(0.95);
+}
+
+.number-btn.active, .time-btn.active {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border-color: var(--accent);
+  color: #1a0f2e;
+  box-shadow: 0 4px 20px rgba(255, 107, 157, 0.4);
+}
+
+.time-group {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.time-btn {
+  font-size: 16px;
+  padding: 16px 12px;
+}
+
+.players-section {
+  margin: 16px 0 0;
+}
+
+.players-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.players-header label {
+  margin: 0;
+  font-size: 14px;
+}
+
+.add-player-form {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.add-player-form input {
+  flex: 1;
+}
+
+.add-player-form .control-btn {
+  flex-shrink: 0;
+}
+
+.impostors-section {
+  margin: 16px 0 0;
+}
+
+.impostors-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 16px;
+  border: 2px solid rgba(255,255,255,0.15);
+}
+
+.impostors-header label {
+  margin: 0;
+  font-size: 14px;
+}
+
+.counter-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.counter-btn {
+  /* Inherits from .control-btn */
+}
+
+.counter-btn.add-btn,
+.counter-btn.remove-btn {
+  /* Keep normal size for counter buttons */
+  min-width: 48px;
+  min-height: 48px;
+  font-size: 24px;
+  padding: 12px;
+}
+
+.counter-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.counter-display {
+  font-size: 28px;
+  font-weight: 800;
+  font-family: "Baloo 2", cursive;
+  min-width: 40px;
+  text-align: center;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.control-btn {
+  min-width: 48px;
+  min-height: 48px;
+  padding: 12px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 800;
+  border: 2px solid;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: "Fredoka", sans-serif;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.control-btn:active {
+  transform: scale(0.95);
+}
+
+.control-btn.add-btn {
+  background: linear-gradient(135deg, var(--ok), #47d18c);
+  border-color: var(--ok);
+  color: #1a0f2e;
+}
+
+.control-btn.remove-btn {
+  background: linear-gradient(135deg, var(--danger), #ff8a80);
+  border-color: var(--danger);
+  color: white;
+  flex-shrink: 0;
+}
+
+/* Remove buttons inside player list should be smaller */
+.player-item .remove-btn {
+  min-width: 36px;
+  min-height: 36px;
+  font-size: 20px;
+  padding: 6px;
+}
+
+.players-list {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.player-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 14px;
+  border: 2px solid rgba(255,255,255,0.15);
+  gap: 10px;
+}
+
+.player-item span {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+  gap: 10px;
+}
+
+.actions button {
+  flex: 1;
+  max-width: 300px;
+}
+
+.actions-full {
+  justify-content: center;
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+.actions-full button {
+  width: 100%;
+  max-width: none;
+}
+
+#pass-actions {
+  justify-content: center;
+}
+
+#pass-actions button,
+#role-panel button {
+  width: 100%;
+  font-size: 20px;
+  padding: 22px 28px;
+  min-height: 68px;
+  border-radius: 20px;
+}
+
+.role-panel {
+  margin-top: 18px;
+}
+
+.role-text {
+  margin-bottom: 6px;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 18px;
+  padding: 16px 24px;
+  font-weight: 700;
+  font-size: 18px;
+  font-family: "Fredoka", sans-serif;
+  transition: all 0.2s ease;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  min-height: 56px;
+  touch-action: manipulation;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #1a0f2e;
+  box-shadow: 0 8px 30px rgba(255, 107, 157, 0.5);
+}
+
+.primary:active {
+  box-shadow: 0 4px 20px rgba(255, 107, 157, 0.4);
+}
+
+.ghost {
+  background: rgba(255,255,255,0.1);
+  color: var(--text);
+  border: 2px solid rgba(255,255,255,0.2);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+.danger {
+  background: linear-gradient(135deg, var(--danger), #ff8a80);
+  color: white;
+  box-shadow: 0 8px 30px rgba(255, 87, 87, 0.5);
+}
+
+.danger:active {
+  box-shadow: 0 4px 20px rgba(255, 87, 87, 0.4);
+}
+
+.header {
+  display: flex;
+  padding: 10px;
+  border-radius: 15px;
+  margin-bottom: 8px;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 10px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.pass-card {
+  text-align: center;
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  min-height: calc(100vh - 60px);
+  min-height: calc(-webkit-fill-available - 60px);
+  min-height: calc(100dvh - 60px);
+}
+
+.pass-title {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.pass-name {
+  font-family: "Baloo 2", cursive;
+  font-size: 44px;
+  font-weight: 800;
+  margin: 0;
+  background: linear-gradient(135deg, var(--ok), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+
+.role-panel {
+  margin-top: 24px;
+  display: grid;
+  gap: 16px;
+  width: 100%;
+}
+
+.role-text {
+  font-size: 30px;
+  font-weight: 800;
+  font-family: "Baloo 2", cursive;
+  padding: 24px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 20px;
+  border: 3px dashed rgba(255,255,255,0.3);
+  line-height: 1.3;
+}
+
+/* Keep hidden as the final source of truth for visibility */
+.hidden {
+  display: none !important;
+}
+
+.timer-card {
+  text-align: center;
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  min-height: calc(100vh - 60px);
+  min-height: calc(-webkit-fill-available - 60px);
+  min-height: calc(100dvh - 60px);
+}
+
+.timer-label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.timer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.timer-display {
+  font-family: "Baloo 2", cursive;
+  font-size: 80px;
+  font-weight: 800;
+  margin: 0;
+  background: linear-gradient(135deg, var(--accent), var(--ok));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.pause-btn {
+  min-width: 60px;
+  min-height: 60px;
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.pause-icon, .play-icon {
+  display: inline-block;
+  line-height: 1;
+}
+
+.timer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.timer-actions button {
+  width: 100%;
+  font-size: 18px;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 8, 12, 0.8);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  z-index: 100;
+}
+
+.modal-content {
+  width: min(620px, 90vw);
+  background: rgba(26, 15, 12, 0.9);
+  border-radius: 28px;
+  border: 2px solid rgba(255,255,255,0.15);
+  padding: 28px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-family: "Baloo 2", cursive;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--accent-2);
+}
+
+.roles-list {
+  display: grid;
+  gap: 24px;
+}
+
+.role-section {
+  background: rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 20px 24px;
+  text-align: center;
+}
+
+.role-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+
+.role-value {
+  font-size: 32px;
+  font-weight: 800;
+  font-family: "Baloo 2", cursive;
+  color: var(--accent-2);
+  line-height: 1.2;
+}
+
+.toast {
+  position: fixed;
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #1a0f2e;
+  padding: 28px 40px;
+  border-radius: 24px;
+  font-size: 24px;
+  font-weight: 700;
+  font-family: "Fredoka", sans-serif;
+  box-shadow: 0 12px 40px rgba(255, 107, 157, 0.6);
+  z-index: 200;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  max-width: 90%;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.toast .player-name {
+  display: block;
+  font-size: 36px;
+  font-weight: 800;
+  font-family: "Baloo 2", cursive;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  margin-top: 8px;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .app {
+    padding: 0;
+  }
+
+  .app-header {
+    padding: 20px 16px 12px;
+  }
+
+  .logo {
+    font-size: 36px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .author-link {
+    font-size: 11px;
+  }
+
+  .card {
+    padding: 24px 20px;
+    border-radius: 24px;
+    min-height: 100vh;
+  }
+
+  .card h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+
+  .pass-card {
+    padding: 48px 24px;
+  }
+
+  .pass-name {
+    font-size: 42px;
+  }
+
+  .role-text {
+    font-size: 32px;
+    padding: 24px;
+  }
+
+  .timer-container {
+    gap: 12px;
+  }
+
+  .timer-display {
+    font-size: 64px;
+  }
+
+  .pause-btn {
+    min-width: 60px;
+    min-height: 60px;
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+  }
+
+  .timer-card {
+    padding: 48px 24px;
+  }
+
+  input, select {
+    font-size: 16px;
+    padding: 14px 16px;
+  }
+
+  button {
+    font-size: 18px;
+    padding: 18px 24px;
+    min-height: 64px;
+  }
+
+  #pass-actions button,
+  #role-panel button {
+    font-size: 22px;
+    padding: 24px 28px;
+    min-height: 76px;
+  }
+
+  .timer-actions button {
+    font-size: 18px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .button-group {
+    gap: 6px;
+  }
+
+  .number-btn, .time-btn {
+    min-height: 52px;
+    padding: 12px 10px;
+    font-size: 16px;
+  }
+
+  .add-btn, .remove-btn {
+    max-width: 56px;
+    font-size: 22px;
+  }
+
+  .control-btn {
+    min-width: 52px;
+    min-height: 52px;
+    font-size: 26px;
+    padding: 12px;
+  }
+
+  .counter-btn.add-btn,
+  .counter-btn.remove-btn {
+    min-width: 52px;
+    min-height: 52px;
+    font-size: 26px;
+    padding: 12px;
+  }
+
+  .player-item .remove-btn {
+    min-width: 36px;
+    min-height: 36px;
+    font-size: 22px;
+    padding: 6px;
+  }
+
+  .players-list {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}
+
+/* Landscape mobile - make even more compact */
+@media (max-height: 600px) and (orientation: landscape) {
+  .app-header {
+    padding: 12px 16px 8px;
+  }
+
+  .logo {
+    font-size: 28px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+  }
+
+  .card {
+    padding: 20px 16px;
+  }
+
+  .card h1 {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  .pass-card, .timer-card {
+    padding: 24px 20px;
+    gap: 16px;
+  }
+
+  .pass-name {
+    font-size: 32px;
+  }
+
+  .role-text {
+    font-size: 24px;
+    padding: 16px;
+  }
+
+  .timer-container {
+    gap: 10px;
+  }
+
+  .timer-display {
+    font-size: 40px;
+  }
+
+  .pause-btn {
+    min-width: 48px;
+    min-height: 48px;
+    width: 48px;
+    height: 48px;
+    font-size: 22px;
+  }
+
+  button {
+    min-height: 52px;
+    padding: 14px 20px;
+    font-size: 16px;
+  }
+
+  #pass-actions button,
+  #role-panel button {
+    min-height: 60px;
+    padding: 18px 24px;
+    font-size: 18px;
+  }
+
+  .number-btn, .time-btn {
+    min-height: 48px;
+    padding: 10px 8px;
+    font-size: 15px;
+  }
+
+  .control-btn {
+    min-width: 48px;
+    min-height: 48px;
+    font-size: 24px;
+    padding: 10px;
+  }
+
+  .counter-btn.add-btn,
+  .counter-btn.remove-btn {
+    min-width: 48px;
+    min-height: 48px;
+    font-size: 24px;
+    padding: 10px;
+  }
+
+  .player-item .remove-btn {
+    min-width: 32px;
+    min-height: 32px;
+    font-size: 20px;
+    padding: 4px;
+  }
+}

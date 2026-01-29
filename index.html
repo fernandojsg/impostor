@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+  <title>Impostor — Juego local</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <!-- iOS Web App -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Impostor" />
+  <link rel="apple-touch-icon" href="favicon.png" />
+
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#1a0f2e" />
+  <meta name="description" content="Local multiplayer party game - Find the impostor!" />
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <main class="app">
+    <section id="screen-setup" class="screen active">
+      <div class="card">
+        <div class="header">
+          <div class="logo">IMPOSTOR</div>
+          <div class="language-switcher">
+            <button type="button" class="lang-btn active" data-lang="es">🇪🇸</button>
+            <button type="button" class="lang-btn" data-lang="en">🇬🇧</button>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="field field-full">
+            <label>Tiempo ⏱️</label>
+            <div class="button-group time-group">
+              <button type="button" class="time-btn active" data-time="unlimited">♾️</button>
+              <button type="button" class="time-btn" data-time="120">2</button>
+              <button type="button" class="time-btn" data-time="240">4</button>
+              <button type="button" class="time-btn" data-time="360">6</button>
+            </div>
+            <input id="time-select" type="hidden" value="unlimited" />
+          </div>
+          <div class="field field-full">
+            <label for="theme-select">Tema</label>
+            <select id="theme-select"></select>
+          </div>
+        </div>
+
+        <div class="players-section">
+          <div class="players-header">
+            <label>Jugadores</label>
+            <div class="add-player-form">
+              <input type="text" id="player-name-input" placeholder="Jugador 1" />
+              <button type="button" id="add-player-btn" class="control-btn add-btn">+</button>
+            </div>
+          </div>
+          <div class="players-list" id="players-list"></div>
+        </div>
+
+        <div class="impostors-section">
+          <div class="impostors-header">
+            <label>Número de impostores</label>
+            <div class="counter-control">
+              <button type="button" id="decrease-impostor-btn" class="control-btn counter-btn remove-btn">−</button>
+              <span id="impostors-display" class="counter-display">1</span>
+              <button type="button" id="increase-impostor-btn" class="control-btn counter-btn add-btn">+</button>
+            </div>
+          </div>
+        </div>
+
+        <input id="players-count" type="hidden" value="0" />
+        <input id="impostors-count" type="hidden" value="1" />
+
+        <div class="actions actions-full">
+          <button id="start-btn" class="primary">Empezar ronda</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-pass" class="screen">
+      <div class="card pass-card">
+        <div class="pass-title" id="pass-title">Pásale este dispositivo a:</div>
+        <div class="pass-name" id="pass-name">Jugador</div>
+        <div id="pass-actions" class="actions">
+          <button id="reveal-btn" class="primary">Ver rol</button>
+        </div>
+        <div id="role-panel" class="role-panel hidden">
+          <div id="role-text" class="role-text"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-timer" class="screen">
+      <div class="card timer-card">
+        <div class="timer-label">Tiempo de debate</div>
+        <div class="timer-container">
+          <div id="timer-display" class="timer-display">00:00</div>
+          <button id="pause-btn" class="pause-btn ghost" aria-label="Pausar">
+            <span class="pause-icon">⏸</span>
+            <span class="play-icon hidden">▶</span>
+          </button>
+        </div>
+        <div class="timer-actions">
+          <button id="roles-btn" class="ghost">Ver roles</button>
+          <button id="next-btn" class="primary">Siguiente palabra</button>
+          <button id="end-btn" class="danger">Acabar ronda</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="roles-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>Roles</div>
+        <button id="close-roles" class="ghost">Cerrar</button>
+      </div>
+      <div id="roles-list" class="roles-list"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script>
+    // Load language-specific words file
+    const savedLang = localStorage.getItem('impostor.lang') || 'es';
+    const script = document.createElement('script');
+    script.src = `words_${savedLang}.js`;
+    script.onload = function() {
+      // Load app.js after words file is loaded
+      const appScript = document.createElement('script');
+      appScript.src = 'app.js';
+      document.head.appendChild(appScript);
+    };
+    document.head.appendChild(script);
+  </script>
+</body>
+</html>
